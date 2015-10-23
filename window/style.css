@@ -1,0 +1,22 @@
+body {
+	background-image: url("http://theaigames.com/img/background-blockbattle.png");
+	background-size: cover;
+	background-repeat: no-repeat;
+	color: white;
+}
+
+#nextBlockView {
+	width: 50px;
+	height: 120px;
+	background-repeat: no-repeat;
+}
+#nextBlockView.left {
+	background-image: url("http://theaigames.com/js/competitions/tetris-battle-frontend/web/img/next-block-left.svg");
+}
+#nextBlockView.right {
+	background-image: url("http://theaigames.com/js/competitions/tetris-battle-frontend/web/img/next-block-right.svg");
+}
+#nextBlockView > img {
+	padding-top: 10px;
+	width: 50px;
+}
