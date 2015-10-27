@@ -16,7 +16,20 @@ body {
 #nextBlockView.right {
 	background-image: url("http://theaigames.com/js/competitions/tetris-battle-frontend/web/img/next-block-right.svg");
 }
-#nextBlockView > img {
-	padding-top: 10px;
-	width: 50px;
+
+.player {
+	position: relative;
+}
+
+.player > img {
+	width: 60px;
+	height: 140px;
+
+	border: 15px solid grey;
+	border-right: none;
+	background-color: black;
+}
+
+.player > canvas {
+	border: 15px solid grey;
 }
