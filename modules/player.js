@@ -4,7 +4,6 @@ var ReactDOM = require('react-dom');
 
 var Field = require('./field');
 var BlockView = require('./block-view');
-var Points = require('./points');
 
 module.exports = React.createClass({
 	render: function() {
