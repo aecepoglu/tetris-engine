@@ -1,4 +1,5 @@
 body {
+	background-color: darkblue;
 	background-image: url("http://theaigames.com/img/background-blockbattle.png");
 	background-size: cover;
 	background-repeat: no-repeat;
@@ -9,12 +10,6 @@ body {
 	width: 50px;
 	height: 120px;
 	background-repeat: no-repeat;
-}
-#nextBlockView.left {
-	background-image: url("http://theaigames.com/js/competitions/tetris-battle-frontend/web/img/next-block-left.svg");
-}
-#nextBlockView.right {
-	background-image: url("http://theaigames.com/js/competitions/tetris-battle-frontend/web/img/next-block-right.svg");
 }
 
 .player {

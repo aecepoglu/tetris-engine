@@ -14,7 +14,8 @@ module.exports = React.createClass({
 				<Field tiles={this.props.field}/>
 
 				<div>{this.props.row_points} Points</div>
-				<div>X{this.props.row_points} Combo</div>
+				<div>X{this.props.combo} Combo</div>
+				<div>X{this.props.skip} Combo</div>
 			</div>
 		);
 	}

@@ -1,29 +1,25 @@
-var players = {
-	_data: {}
-};
+var players = {};
+
+var datas = {};
 
 players.createPlayer = function(name) {
-	players._data[name] = {};
+	datas[name] = {};
 };
 
-players.setPlayer = function(playerName, key, value) {
-	players._data[playerName][key] = value;
+players.setPlayer = function(name, values) {
+	for (var key in values) {
+		datas[name][key] = values[key];
+	}
 };
 
-players.setAllPlayers = function(key, value) {
-	for (var playerName in players._data) {
-		players._data[playerName][key] = value;
+players.setAllPlayers = function(values) {
+	for (var name in datas) {
+		players.setPlayer(name, values);
 	}
 };
 
 players.getPlayer = function(playerName) {
-	return players._data[playerName];
-};
-
-players.forEach = function(callback) {
-	for (var playerName in players._data) {
-		callback(players._data[playerName], playerName);
-	}
+	return datas[playerName];
 };
 
 module.exports = players;

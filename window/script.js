@@ -7,8 +7,6 @@ var Player = require('./modules/player');
 var settings = require('./settings');
 var playerDatas = require('./playerDatas');
 
-var _private = {};
-
 ipc.on('update/game/round', function(data) {
 	ReactDOM.render(
 		React.createElement(RoundIndicator, {roundNo: data}),
@@ -16,73 +14,42 @@ ipc.on('update/game/round', function(data) {
 	);
 });
 
-_private.updatePlayer = function(name) {
+function drawPlayer(name) {
 	ReactDOM.render(
 		React.createElement(Player, playerDatas.getPlayer(name)),
 		document.getElementById(name + '-container')
 	);
 };
 
-ipc.on('settings/player_names', function(names) {
-	names.forEach(function(name) {
-		playerDatas.createPlayer(name);;
+ipc.on('cmd/settings', function(values) {
+	settings.set('field_width', values.field_size.width);
+	settings.set('field_height', values.field_size.height);
 
-		var prefix = 'update/' + name;
-		
-		ipc.on(prefix + '/row_points', function(data) {
-			playerDatas.setPlayer(name, 'row_points', data);
-		});
-
-		ipc.on(prefix + '/combo', function(data) {
-			playerDatas.setPlayer(name, 'combo', data);
-		});
-
-		ipc.on(prefix + '/field', function(data) {
-			playerDatas.setPlayer(name, 'field', data);
-		});
-
-		_private.updatePlayer(name);
+	values.player_names.forEach(function(name) {
+		playerDatas.createPlayer(name);
 	});
+
+	console.log('settings set');
 });
 
-ipc.on('settings/field_width', function(data) {
-	settings.set('field_width', data);
+ipc.on('cmd/update', function(values) {
+	if (values.common) {
+		playerDatas.setAllPlayers(values.common);
+	}
+
+	for (var name in values.players) {
+		playerDatas.setPlayer(name, values.players[name]);
+		drawPlayer(name);
+	}
 });
 
-ipc.on('settings/field_height', function(data) {
-	settings.set('field_height', data);
-});
-
-ipc.on('update/game/next_piece_type', function(shape) {
-	playerDatas.setAllPlayers('next_piece_type', shape);
-});
-
-ipc.on('update/game/this_piece_type', function(shape) {
-	playerDatas.setAllPlayers('this_piece_type', shape);
-});
-
-ipc.on('update/game/this_piece_position', function(pos) {
-	playerDatas.setAllPlayers('this_piece_position', pos);
-});
-
-_private.updateAllPlayers = function() {
-	playerDatas.forEach(function(player, name) {
-		_private.updatePlayer(name);
-	});
-};
-
-ipc.on('window/draw', _private.updateAllPlayers);
-
-var nextRoundClicked =
-_private.nextRoundClicked = function() {
-	_private.updateAllPlayers();
-
+function nextRoundClicked() {
 	ipc.send('engine/next_round', null);
 };
 
+function nextFrameClicked() {
+	ipc.send('engine/next_frame', null);
+}
+
 /* init */
 ipc.send('engine/start', null);
-
-module.exports = {
-	_private: _private
-};

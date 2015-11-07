@@ -3,9 +3,16 @@ var BrowserWindow = require('browser-window');
 var ipc = require('ipc');
 var readline = require('readline');
 
+var map = require('./map');
+
 require('crash-reporter').start();
 
 var mainWindow = null;
+
+var roundNo = 0;
+var nextShape;
+var movesQueue = [];
+var score = {points: 0, combo: 0, skip: 0};
 
 function sendMsg(topic, payload) {
 	mainWindow.webContents.send(topic, payload);
@@ -38,46 +45,81 @@ function getRandomShape() {
 	return shapes[Math.floor( Math.random() * (shapes.length - 1) )];
 }
 
-var roundNo = 0;
-var nextShape = getRandomShape();
-
-
 function nextRound() {
 	roundNo ++;
 
-	var map = generateRandomMap();
+	var curShape = nextShape;
+	nextShape = getRandomShape();
 
-	sendMsg('update/game/round', roundNo);
-	sendMsg('update/game/this_piece_type', nextShape);
-	sendMsg('update/game/next_piece_type', getRandomShape());
-	sendMsg('update/game/this_piece_position', {i: 4, j: -1});
+	var clear = map.startRound(curShape);
 
-	sendMsg('update/myBot/row_points', 0);
-	sendMsg('update/myBot/combo', 0);
-	sendMsg('update/myBot/field', map);
+	if (clear) {
+		score.points += clear.points + score.combo;
+		
+		if (clear.combo) {
+			score.combo ++;
+		}
+	}
+	else {
+		score.combo = 0;
+	}
 
-	sendMsg('update/opponent1/row_points', 0);
-	sendMsg('update/opponent1/combo', 0);
-	sendMsg('update/opponent1/field', map);
+	sendMsg('cmd/update', {
+		common: {
+			round: roundNo,
+			this_piece_type: curShape,
+			next_piece_type: nextShape
+		},
+		players: {
+			myBot: {
+				row_points: score.points,
+				combo: score.combo,
+				skip: score.skip,
+				field: map.getField()
+			}
+		}
+	});
 
-	/*TODO ask to bot through stdout for action*/
+	console.log("pretend I'm asking for the next round");
+}
+
+function nextStep() {
+	var move = movesQueue.shift();
+
+	if (move === undefined && map.isRoundOver()) {
+		nextRound();
+	}
+	else {
+		map.doMove(move || 'down');
+
+		sendMsg('cmd/update', {
+			players: {
+				myBot: {
+					field: map.getField()
+				}
+			}
+		});
+	}
 }
 
 function initEngine() {
-	sendMsg('settings/timebank', 10000);
-	sendMsg('settings/time_per_move', 1);
-	sendMsg('settings/player_names', ['myBot']);
-	sendMsg('settings/your_bot', 'myBot');
-	sendMsg('settings/field_width', 10);
-	sendMsg('settings/field_height', 20);
+	var size = {width: 10, height: 20};
+	nextShape = getRandomShape();
+
+	sendMsg('cmd/settings', {
+		timebank: 10000,
+		time_per_move: 1,
+		player_names: ['myBot'],
+		field_size: size
+	});
+
+	map.init(size);
 
 	nextRound();
-
-	sendMsg('window/draw', null);
 }
 
 stdio.on('line', function(line) {
-	//TODO it will read commands in the form of "left left drop"
+	movesQueue = line.split(' ');
 });
 
 ipc.on('engine/start', function() {
@@ -85,7 +127,7 @@ ipc.on('engine/start', function() {
 });
 
 ipc.on('engine/next_round', function() {
-	nextRound();
+	nextStep();
 });
 
 app.on('ready', function() {
