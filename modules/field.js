@@ -10,7 +10,6 @@ module.exports = React.createClass({
 	},
 	componentDidUpdate: function() {
 		var context = ReactDOM.findDOMNode(this).getContext('2d');
-		//context.clearRect(0,0,settings.width,settings.height);
 		this.paint(context);
 	},
 	paint: function(context) {

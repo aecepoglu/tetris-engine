@@ -127,6 +127,10 @@ ipc.on('engine/start', function() {
 });
 
 ipc.on('engine/next_round', function() {
+	//TODO
+});
+
+ipc.on('engine/next_frame', function() {
 	nextStep();
 });
 

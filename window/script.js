@@ -7,17 +7,10 @@ var Player = require('./modules/player');
 var settings = require('./settings');
 var playerDatas = require('./playerDatas');
 
-ipc.on('update/game/round', function(data) {
-	ReactDOM.render(
-		React.createElement(RoundIndicator, {roundNo: data}),
-		document.getElementById('roundLabel')
-	);
-});
-
 function drawPlayer(name) {
 	ReactDOM.render(
 		React.createElement(Player, playerDatas.getPlayer(name)),
-		document.getElementById(name + '-container')
+		document.getElementById('player1-container')
 	);
 };
 
@@ -28,19 +21,25 @@ ipc.on('cmd/settings', function(values) {
 	values.player_names.forEach(function(name) {
 		playerDatas.createPlayer(name);
 	});
-
-	console.log('settings set');
 });
 
 ipc.on('cmd/update', function(values) {
 	if (values.common) {
 		playerDatas.setAllPlayers(values.common);
+
+		if (values.common.round) {
+			ReactDOM.render(
+				React.createElement(RoundIndicator, {roundNo: values.common.round}),
+				document.getElementById('roundLabel')
+			);
+		}
 	}
 
 	for (var name in values.players) {
 		playerDatas.setPlayer(name, values.players[name]);
 		drawPlayer(name);
 	}
+
 });
 
 function nextRoundClicked() {

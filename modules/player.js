@@ -13,9 +13,11 @@ module.exports = React.createClass({
 				<BlockView shape={this.props.next_piece_type}/>
 				<Field tiles={this.props.field}/>
 
-				<div>{this.props.row_points} Points</div>
-				<div>X{this.props.combo} Combo</div>
-				<div>X{this.props.skip} Combo</div>
+				<div className="stats">
+					<div className="stat">Points<br/>{this.props.row_points}</div>
+					<div className="stat">Combo<br/>{this.props.combo}</div>
+					<div className="stat">Skips<br/>{this.props.skip}</div>
+				</div>
 			</div>
 		);
 	}
