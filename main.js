@@ -13,11 +13,11 @@ var roundNo = 0;
 var nextShape;
 var movesQueue = [];
 var score = {points: 0, combo: 0, skip: 0};
+var timebank;
 
 var config = {
 	junkRowPeriod: 10,
 	fieldSize: { width: 10, height: 20 },
-	playerNames: ['myBot'],
 	timebank: 10000,
 	timePerMove: 1
 };
@@ -76,7 +76,18 @@ function nextRound() {
 		}
 	});
 
-	console.log("pretend I'm asking for the next round");
+	console.log('update game round ' + roundNo);
+	console.log('update game this_piece_type ' + curShape);
+	console.log('update game next_piece_type ' + nextShape);
+
+	console.log('update myBot row_points ' + score.points);
+	console.log('update myBot combo ' + score.combo);
+	console.log('update myBot skips ' + score.skip);
+	console.log('update myBot field ' + map.getField().map(function(row) {
+		return row.join(',');
+	}).join(';'));
+
+	console.log('action moves ' + timebank);
 }
 
 function nextStep() {
@@ -104,9 +115,18 @@ function initEngine() {
 	sendMsg('cmd/settings', {
 		timebank: config.timebank,
 		time_per_move: config.timePerMove,
-		player_names: config.playerNames,
+		player_names: ['myBot'],
 		field_size: config.fieldSize
 	});
+
+	console.log('settings timebank ' + config.timebank);
+	console.log('settings time_per_move ' + config.time_per_move);
+	console.log('settings player_names ' + ['myBot'].join(','));
+	console.log('settings your_bot ' + 'myBot');
+	console.log('settings field_width ' + config.fieldSize.width);
+	console.log('settings field_height ' + config.fieldSize.height);
+
+	timebank = config.timebank;
 
 	map.init(config.fieldSize);
 
@@ -115,6 +135,8 @@ function initEngine() {
 
 stdio.on('line', function(line) {
 	movesQueue = line.split(' ');
+
+	timebank -= movesQueue.length * config.timePerMove;
 });
 
 ipc.on('engine/start', function() {
