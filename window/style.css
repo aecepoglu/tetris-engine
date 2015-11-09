@@ -1,6 +1,6 @@
 body {
 	background-color: darkblue;
-	background-image: url("http://theaigames.com/img/background-blockbattle.png");
+	background-image: url("./img/background-blockbattle.png");
 	background-size: cover;
 	background-repeat: no-repeat;
 	color: white;
@@ -15,7 +15,7 @@ body {
 	width: 60px;
 	height: 140px;
 
-	border: 15px solid grey;
+	border: 15px solid #008cd1;
 	border-right: none;
 	background-color: black;
 }
@@ -24,13 +24,14 @@ body {
 	position: absolute;
 	left: 75px;
 
-	border: 15px solid grey;
+	border: 15px outset #008cd1;
 }
 
 .player > .stats {
 	position: relative;
 
 	top: 200px;
+	width: 75px;
 }
 
 .player > .stats > .stat {

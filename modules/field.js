@@ -16,14 +16,13 @@ module.exports = React.createClass({
 		context.save();
 
 		if(this.props.tiles !== undefined) {
+			var colors;
+
 			this.props.tiles.forEach(function(row, rowIndex) {
 				row.forEach(function(tile, colIndex) {
-					if(tile === 0) {
-						context.fillStyle="black";
-					}
-					else {
-						context.fillStyle="red";
-					}
+					colors = config.tileColors[tile];
+
+					context.fillStyle = colors[(rowIndex + colIndex) % colors.length];
 
 					context.fillRect(
 						colIndex * config.TILE_LEN,
