@@ -199,4 +199,24 @@ pub.startRound = function(shape) {
 	return result;
 };
 
+pub.addJunkRow = function() {
+	var gameOver = field[0].filter(function(it) {
+		return it >= TILE.SHAPE;
+	}).length > 0;
+
+	var lastRowNo = fieldSize.height - 1;
+
+	for (var row = 0; row < lastRowNo; row ++) {
+		field[row] = field[row + 1];
+	}
+
+	field[lastRowNo] = [];
+
+	for (var col = 0; col < fieldSize.width; col ++) {
+		field[lastRowNo][col] = TILE.JUNK;
+	}
+
+	return gameOver;
+};
+
 module.exports = pub;

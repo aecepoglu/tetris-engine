@@ -14,6 +14,14 @@ var nextShape;
 var movesQueue = [];
 var score = {points: 0, combo: 0, skip: 0};
 
+var config = {
+	junkRowPeriod: 10,
+	fieldSize: { width: 10, height: 20 },
+	playerNames: ['myBot'],
+	timebank: 10000,
+	timePerMove: 1
+};
+
 function sendMsg(topic, payload) {
 	mainWindow.webContents.send(topic, payload);
 }
@@ -22,22 +30,6 @@ var stdio = readline.createInterface({
 	input: process.stdin,
 	output: process.stdout
 });
-
-function generateRandomMap() {
-	var result = [];
-
-	for (var row=0; row<20; row++) {
-		var cols = [];
-
-		for (var col=0; col<10; col++) {
-			cols[col] = Math.floor(Math.random() * 2);
-		}
-
-		result[row] = cols;
-	}
-
-	return result;
-}
 
 function getRandomShape() {
 	var shapes = ['O', 'I', 'L', 'J', 'S', 'Z', 'T'];
@@ -62,6 +54,10 @@ function nextRound() {
 	}
 	else {
 		score.combo = 0;
+	}
+
+	if ((roundNo % config.junkRowPeriod) == 0) {
+		map.addJunkRow();
 	}
 
 	sendMsg('cmd/update', {
@@ -103,17 +99,16 @@ function nextStep() {
 }
 
 function initEngine() {
-	var size = {width: 10, height: 20};
 	nextShape = getRandomShape();
 
 	sendMsg('cmd/settings', {
-		timebank: 10000,
-		time_per_move: 1,
-		player_names: ['myBot'],
-		field_size: size
+		timebank: config.timebank,
+		time_per_move: config.timePerMove,
+		player_names: config.playerNames,
+		field_size: config.fieldSize
 	});
 
-	map.init(size);
+	map.init(config.fieldSize);
 
 	nextRound();
 }
