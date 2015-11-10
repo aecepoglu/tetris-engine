@@ -4,8 +4,11 @@ var ReactDOM = require('react-dom');
 
 var RoundIndicator = require('./modules/round-indicator');
 var Player = require('./modules/player');
+var TextArea = require('./modules/text-area');
 var settings = require('./settings');
 var playerDatas = require('./playerDatas');
+
+var debugs = [];
 
 function drawPlayer(name) {
 	ReactDOM.render(
@@ -40,6 +43,15 @@ ipc.on('cmd/update', function(values) {
 		drawPlayer(name);
 	}
 
+});
+
+ipc.on('cmd/debug', function(text) {
+	debugs.push(text);
+
+	ReactDOM.render(
+		React.createElement(TextArea, {texts: debugs}),
+		document.getElementById('debugTextArea')
+	);
 });
 
 function nextRoundClicked() {

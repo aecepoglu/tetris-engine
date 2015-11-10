@@ -134,9 +134,14 @@ function initEngine() {
 }
 
 stdio.on('line', function(line) {
-	movesQueue = line.split(' ');
+	if (line.indexOf('#') == 0) {
+		sendMsg('cmd/debug', line.substring(1));
+	}
+	else {
+		movesQueue = line.split(' ');
 
-	timebank -= movesQueue.length * config.timePerMove;
+		timebank -= movesQueue.length * config.timePerMove;
+	}
 });
 
 ipc.on('engine/start', function() {
