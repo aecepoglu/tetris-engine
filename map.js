@@ -179,15 +179,22 @@ pub.isRoundOver = function() {
 }
 
 pub.startRound = function(shape) {
-	var result = undefined;
+	var result = true;
 
 	if (curShape !== undefined) {
+		if (curPosY < 0) {
+			//game over
+			return false;
+		}
+
 		drawShapeOnField();
 
 		var clear = getClearType();
 
 		if (clear > 0) {
-			result = CLEARS[clear];
+			result = {
+				clear: CLEARS[clear]
+			};
 		}
 	}
 

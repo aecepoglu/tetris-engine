@@ -9,6 +9,7 @@ require('crash-reporter').start();
 
 var mainWindow = null;
 
+var isGameover = false;
 var roundNo = 0;
 var nextShape;
 var movesQueue = [];
@@ -16,7 +17,7 @@ var score = {points: 0, combo: 0, skip: 0};
 var timebank;
 
 var config = {
-	junkRowPeriod: 10,
+	junkRowPeriod: 50,
 	fieldSize: { width: 10, height: 20 },
 	timebank: 10000,
 	timePerMove: 1
@@ -32,9 +33,9 @@ var stdio = readline.createInterface({
 });
 
 function getRandomShape() {
-	var shapes = ['O', 'I', 'L', 'J', 'S', 'Z', 'T'];
+	var shapes = ['O', /*'I', */'L', 'J', 'S', 'Z', 'T'];
 
-	return shapes[Math.floor( Math.random() * (shapes.length - 1) )];
+	return shapes[Math.floor( Math.random() * (shapes.length) )];
 }
 
 function nextRound() {
@@ -43,17 +44,26 @@ function nextRound() {
 	var curShape = nextShape;
 	nextShape = getRandomShape();
 
-	var clear = map.startRound(curShape);
+	var roundResult = map.startRound(curShape);
 
-	if (clear) {
-		score.points += clear.points + score.combo;
-		
-		if (clear.combo) {
-			score.combo ++;
+	if (roundResult) {
+		var clear = roundResult.clear;
+
+		if (clear) {
+			score.points += clear.points + score.combo;
+			
+			if (clear.combo) {
+				score.combo ++;
+			}
+		}
+		else {
+			score.combo = 0;
 		}
 	}
 	else {
-		score.combo = 0;
+		//game over
+		isGameover = true;
+		sendMsg('cmd/gameover', null);
 	}
 
 	if ((roundNo % config.junkRowPeriod) == 0) {
@@ -135,6 +145,9 @@ function initEngine() {
 }
 
 stdio.on('line', function(line) {
+	if (isGameover)
+		return;
+
 	if (line.indexOf('#') == 0) {
 		sendMsg('cmd/debug', line.substring(1));
 	}
@@ -150,10 +163,14 @@ ipc.on('engine/start', function() {
 });
 
 ipc.on('engine/next_round', function() {
+	if (isGameover)
+		return;
 	//TODO
 });
 
 ipc.on('engine/next_frame', function() {
+	if (isGameover)
+		return;
 	nextStep();
 });
 

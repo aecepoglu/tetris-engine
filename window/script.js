@@ -5,6 +5,7 @@ var ReactDOM = require('react-dom');
 var RoundIndicator = require('./modules/round-indicator');
 var Player = require('./modules/player');
 var TextArea = require('./modules/text-area');
+var PlayButton = require('./modules/play-button');
 var settings = require('./settings');
 var playerDatas = require('./playerDatas');
 
@@ -25,6 +26,11 @@ ipc.on('cmd/settings', function(values) {
 	values.player_names.forEach(function(name) {
 		playerDatas.createPlayer(name);
 	});
+
+	ReactDOM.render(
+		React.createElement(PlayButton, {callback: nextFrameClicked}),
+		document.getElementById('playButtonContainer')
+	);
 });
 
 ipc.on('cmd/update', function(values) {
@@ -57,6 +63,10 @@ ipc.on('cmd/debug', function(text) {
 		React.createElement(TextArea, {texts: debugs}),
 		document.getElementById('debugTextArea')
 	);
+});
+
+ipc.on('cmd/gameover', function() {
+	//TODO show gameover overlay
 });
 
 function nextRoundClicked() {
