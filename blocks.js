@@ -6,7 +6,6 @@ function rotate(x, len) {
 
 	for(var row=0; row<len; row++) {
 		var k = len - 1 - row;
-		result[col] = [];
 
 		for(var col=0; col<len; col++) {
 			result[col][k] = x[row][col];
@@ -18,12 +17,13 @@ function rotate(x, len) {
 
 function listRotations(x) {
 	var matrixes = [];
+	var size = x.length;
 
 	for(var i=0; i<4; i++) {
-		var xRotated = x;
+		var xRotated = x.slice(0);
 		
 		for(var j=0; j<i; j++) {
-			xRotated = rotate(xRotated, x.length);
+			xRotated = rotate(xRotated, size);
 		}
 
 		matrixes[i] = xRotated;
@@ -37,10 +37,10 @@ var blocks = {
 	O: {
 		type: 'O',
 		size: 2,
-		tiles: listRotations([
+		tiles: [[
 			[1,1],
 			[1,1]
-		])
+		]]
 	},
 	I: {
 		type: 'I',
@@ -56,8 +56,8 @@ var blocks = {
 		type: 'T',
 		size: 3,
 		tiles: listRotations([
-			[1,1,1],
 			[0,1,0],
+			[1,1,1],
 			[0,0,0]
 		])
 	},
@@ -65,36 +65,36 @@ var blocks = {
 		type: 'L',
 		size: 3,
 		tiles: listRotations([
-			[1,0,0],
-			[1,0,0],
-			[1,1,0]
+			[0,0,1],
+			[1,1,1],
+			[0,0,0]
 		])
 	},
 	J: {
 		type: 'J',
 		size: 3,
 		tiles: listRotations([
-			[0,0,1],
-			[0,0,1],
-			[0,1,1]
+			[1,0,0],
+			[1,1,1],
+			[0,0,0]
 		])
 	},
 	S: {
 		type: 'S',
 		size: 3,
 		tiles: listRotations([
-			[0,0,0],
 			[0,1,1],
 			[1,1,0],
+			[0,0,0],
 		])
 	},
 	Z: {
 		type: 'Z',
 		size: 3,
 		tiles: listRotations([
-			[0,0,0],
 			[1,1,0],
-			[0,1,1]
+			[0,1,1],
+			[0,0,0],
 		])
 	}
 };

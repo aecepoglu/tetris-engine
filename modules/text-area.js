@@ -8,7 +8,7 @@ module.exports = React.createClass({
 	render: function render() {
 		return (<div>{
 			this.props.texts.map(function(text, index) {
-				return <p key={index}>{text}</p>
+				return <div key={index}>{text}</div>
 			})
 		}</div>);
 	}

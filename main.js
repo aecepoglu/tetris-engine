@@ -79,6 +79,7 @@ function nextRound() {
 	console.log('update game round ' + roundNo);
 	console.log('update game this_piece_type ' + curShape);
 	console.log('update game next_piece_type ' + nextShape);
+	console.log('update game this_piece_position ' + [4, -1].join(','));
 
 	console.log('update myBot row_points ' + score.points);
 	console.log('update myBot combo ' + score.combo);

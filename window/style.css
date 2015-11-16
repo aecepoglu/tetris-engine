@@ -56,4 +56,6 @@ body {
 	height: 400px;
 
 	overflow-y: scroll;
+
+	font-family: monospace;
 }
