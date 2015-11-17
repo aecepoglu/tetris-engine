@@ -22,4 +22,14 @@ players.getPlayer = function(playerName) {
 	return datas[playerName];
 };
 
+players.getPlayerNames = function() {
+	var names = [];
+
+	for (var name in datas) {
+		names.push(name);
+	}
+
+	return names;
+}
+
 module.exports = players;

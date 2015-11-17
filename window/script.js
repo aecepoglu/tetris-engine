@@ -77,5 +77,15 @@ function nextFrameClicked() {
 	ipc.send('engine/next_frame', null);
 }
 
+function debugField() {
+	var str = "";
+	playerDatas.getPlayerNames().forEach(function(name) {
+		str += (name + ":\n");
+		str += (playerDatas.getPlayer(name).field.join('\n'));
+		str += ('\n');
+	});
+	alert("Fields for players:\n\n" + str);
+}
+
 /* init */
 ipc.send('engine/start', null);
