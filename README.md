@@ -9,16 +9,18 @@ It reads commands from stdin and prints updates to stdout.
 How to Run
 ------------
 
-# open a terminal
-cd /path/to/tetris-engine
-npm install; grunt;
-mkfifo from-engine;
-mkfifo to-engine
-node_modules/.bin/electron ./ < to-engine | tee from-engine
+Simply use named-pipes for connecting your bot to the engine
 
-# open another terminal
-cd /path/to/your/bot
-./your-bot-exe < /path/to/tetris-engine/from-engine > /path/to/to-engine
+    # open a terminal
+    cd /path/to/tetris-engine
+    npm install; grunt;
+    mkfifo from-engine;
+    mkfifo to-engine
+    node_modules/.bin/electron ./ < to-engine | tee from-engine
+
+    # open another terminal
+    cd /path/to/your/bot
+    ./your-bot-exe < /path/to/tetris-engine/from-engine > /path/to/to-engine
 
 More
 ----------
