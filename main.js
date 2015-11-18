@@ -33,7 +33,7 @@ var stdio = readline.createInterface({
 });
 
 function getRandomShape() {
-	var shapes = ['O', /*'I', */'L', 'J', 'S', 'Z', 'T'];
+	var shapes = ['O', 'I', 'L', 'J', 'S', 'Z', 'T'];
 
 	return shapes[Math.floor( Math.random() * (shapes.length) )];
 }
