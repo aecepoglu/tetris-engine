@@ -77,7 +77,7 @@ function nextRound() {
 			next_piece_type: nextShape
 		},
 		players: {
-			myBot: {
+			player1: {
 				row_points: score.points,
 				combo: score.combo,
 				skip: score.skip,
@@ -91,10 +91,10 @@ function nextRound() {
 	console.log('update game next_piece_type ' + nextShape);
 	console.log('update game this_piece_position ' + [4, -1].join(','));
 
-	console.log('update myBot row_points ' + score.points);
-	console.log('update myBot combo ' + score.combo);
-	console.log('update myBot skips ' + score.skip);
-	console.log('update myBot field ' + map.getField().map(function(row) {
+	console.log('update player1 row_points ' + score.points);
+	console.log('update player1 combo ' + score.combo);
+	console.log('update player1 skips ' + score.skip);
+	console.log('update player1 field ' + map.getField().map(function(row) {
 		return row.join(',');
 	}).join(';'));
 
@@ -112,7 +112,7 @@ function nextStep() {
 
 		sendMsg('cmd/update', {
 			players: {
-				myBot: {
+				player1: {
 					field: map.getField()
 				}
 			}
@@ -126,14 +126,14 @@ function initEngine() {
 	sendMsg('cmd/settings', {
 		timebank: config.timebank,
 		time_per_move: config.timePerMove,
-		player_names: ['myBot'],
+		player_names: ['player1'],
 		field_size: config.fieldSize
 	});
 
 	console.log('settings timebank ' + config.timebank);
 	console.log('settings time_per_move ' + config.time_per_move);
-	console.log('settings player_names ' + ['myBot'].join(','));
-	console.log('settings your_bot ' + 'myBot');
+	console.log('settings player_names ' + ['player1'].join(','));
+	console.log('settings your_bot ' + 'player1');
 	console.log('settings field_width ' + config.fieldSize.width);
 	console.log('settings field_height ' + config.fieldSize.height);
 
