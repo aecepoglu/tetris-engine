@@ -20,7 +20,8 @@ var config = {
 	junkRowPeriod: 50,
 	fieldSize: { width: 10, height: 20 },
 	timebank: 10000,
-	timePerMove: 1
+	timePerMove: 1,
+	playerNames: ['player1', 'player2']
 };
 
 function sendMsg(topic, payload) {
@@ -91,12 +92,14 @@ function nextRound() {
 	console.log('update game next_piece_type ' + nextShape);
 	console.log('update game this_piece_position ' + [4, -1].join(','));
 
-	console.log('update player1 row_points ' + score.points);
-	console.log('update player1 combo ' + score.combo);
-	console.log('update player1 skips ' + score.skip);
-	console.log('update player1 field ' + map.getField().map(function(row) {
-		return row.join(',');
-	}).join(';'));
+	config.playerNames.forEach(function(it) {
+		console.log('update ' + it + ' row_points ' + score.points);
+		console.log('update ' + it + ' combo ' + score.combo);
+		console.log('update ' + it + ' skips ' + score.skip);
+		console.log('update ' + it + ' field ' + map.getField().map(function(row) {
+			return row.join(',');
+		}).join(';'));
+	});
 
 	console.log('action moves ' + timebank);
 }
@@ -126,13 +129,13 @@ function initEngine() {
 	sendMsg('cmd/settings', {
 		timebank: config.timebank,
 		time_per_move: config.timePerMove,
-		player_names: ['player1'],
+		player_names: config.playerNames,
 		field_size: config.fieldSize
 	});
 
 	console.log('settings timebank ' + config.timebank);
 	console.log('settings time_per_move ' + config.time_per_move);
-	console.log('settings player_names ' + ['player1'].join(','));
+	console.log('settings player_names ' + config.playerNames.join(','));
 	console.log('settings your_bot ' + 'player1');
 	console.log('settings field_width ' + config.fieldSize.width);
 	console.log('settings field_height ' + config.fieldSize.height);

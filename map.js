@@ -133,7 +133,6 @@ var moves = {
 	},
 	turnleft: function() {
 		var nextRotation = (curRotation + 3) % 4;
-		console.log(nextRotation);
 		if (checkIsClear(field, curPosY, curPosX, curShape.tiles[nextRotation])) {
 			curRotation = nextRotation;
 		}
