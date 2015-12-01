@@ -9,11 +9,13 @@ It reads commands from stdin and prints updates to stdout.
 How to Run
 ------------
 
-Simply use named-pipes for connecting your bot to the engine
+Simply use named-pipes for connecting your bot to the engine.  
+If you don't want to run Grunt, you can download [here](https://bitbucket.org/aecepoglu/tetris-engine/downloads)
 
     # open a terminal
     cd /path/to/tetris-engine
-    npm install; grunt;
+    npm install
+	grunt
     mkfifo from-engine;
     mkfifo to-engine
     node_modules/.bin/electron ./ < to-engine | tee from-engine
