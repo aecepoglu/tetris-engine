@@ -155,7 +155,7 @@ stdio.on('line', function(line) {
 		sendMsg('cmd/debug', line.substring(1));
 	}
 	else {
-		movesQueue = line.split(' ');
+		movesQueue = line.split(',');
 
 		timebank -= movesQueue.length * config.timePerMove;
 	}
