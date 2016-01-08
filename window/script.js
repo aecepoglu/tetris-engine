@@ -80,9 +80,15 @@ function nextFrameClicked() {
 function debugField() {
 	var str = "";
 	playerDatas.getPlayerNames().forEach(function(name) {
-		str += (name + ":\n");
-		str += (playerDatas.getPlayer(name).field.join('\n'));
-		str += ('\n');
+		var data = playerDatas.getPlayer(name);
+
+		if (data.field) {
+			str += (name + ":\n[\n");
+			str += (playerDatas.getPlayer(name).field.map(function(it) {
+				return '\t[' + it.join(',') + ']';
+			}).join(',\n'));
+			str += ('\n]\n');
+		}
 	});
 	alert("Fields for players:\n\n" + str);
 }

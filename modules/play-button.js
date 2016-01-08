@@ -13,7 +13,7 @@ module.exports = React.createClass({
 			this.setState({
 				timer: setInterval(function() {
 					ipc.send('engine/next_frame', null);
-				}, 200),
+				}, 100),
 				isPlaying:true 
 			});
 		}
