@@ -225,4 +225,45 @@ pub.addJunkRow = function() {
 	return gameOver;
 };
 
+pub.addBadRows = function(count) {
+	var gameOver = field.some(function(row, rowIndex) {
+		return rowIndex < count && row.some(function(tile) {
+			return tile >= TILE.SHAPE;
+		});
+	});
+
+	var junkStartRow = fieldSize.height - (function(field) {
+		var count = 0;
+
+		for (var row = fieldSize.height - 1; row >= 0 && field[row][0] == TILE.JUNK; row --)
+			count ++;
+
+		return count;
+	})(field);
+
+	for (var row = count; row < junkStartRow; row ++)
+		field[row - count] = field[row];
+
+	for (var row = junkStartRow - count; row < junkStartRow; row ++) {
+		var newRow = [];
+
+		for (var col = 0; col < fieldSize.width; col ++)
+			newRow[col] = TILE.FILLED;
+
+		var numHolesOpened = 0;
+		while (numHolesOpened < 2) {
+			var holeIndex = Math.floor(Math.random() * fieldSize.width);
+
+			if (newRow[holeIndex] != TILE.EMPTY) {
+				newRow[holeIndex] = TILE.EMPTY;
+				numHolesOpened ++;
+			}
+		};
+		
+		field[row] = newRow;
+	}
+	
+	return gameOver;
+};
+
 module.exports = pub;

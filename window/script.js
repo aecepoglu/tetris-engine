@@ -73,6 +73,10 @@ function nextRoundClicked() {
 	ipc.send('engine/next_round', null);
 };
 
+function badRowClicked() {
+	ipc.send('engine/add_bad_row', null);
+};
+
 function nextFrameClicked() {
 	ipc.send('engine/next_frame', null);
 }

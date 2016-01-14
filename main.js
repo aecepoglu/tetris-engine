@@ -13,6 +13,7 @@ var isGameover = false;
 var roundNo = 0;
 var nextShape;
 var movesQueue = [];
+var numBadRowsToAdd = 0;
 var score = {points: 0, combo: 0, skip: 0};
 var timebank;
 
@@ -69,6 +70,11 @@ function nextRound() {
 
 	if ((roundNo % config.junkRowPeriod) == 0) {
 		map.addJunkRow();
+	}
+
+	if (numBadRowsToAdd > 0) {
+		map.addBadRows(numBadRowsToAdd);
+		numBadRowsToAdd = 0;
 	}
 
 	sendMsg('cmd/update', {
@@ -175,6 +181,10 @@ ipc.on('engine/next_frame', function() {
 	if (isGameover)
 		return;
 	nextStep();
+});
+
+ipc.on('engine/add_bad_row', function() {
+	numBadRowsToAdd ++;
 });
 
 app.on('ready', function() {
