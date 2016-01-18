@@ -10,6 +10,7 @@ require('crash-reporter').start();
 var mainWindow = null;
 
 var isGameover = false;
+var expectingInput = true;
 var roundNo = 0;
 var nextShape;
 var movesQueue = [];
@@ -108,6 +109,8 @@ function nextRound() {
 	});
 
 	console.log('action moves ' + timebank);
+
+	expectingInput = true;
 }
 
 function nextStep() {
@@ -154,6 +157,8 @@ function initEngine() {
 }
 
 stdio.on('line', function(line) {
+	expectingInput = false;
+
 	if (isGameover)
 		return;
 
@@ -172,13 +177,13 @@ ipc.on('engine/start', function() {
 });
 
 ipc.on('engine/next_round', function() {
-	if (isGameover)
+	if (isGameover || expectingInput)
 		return;
 	//TODO
 });
 
 ipc.on('engine/next_frame', function() {
-	if (isGameover)
+	if (isGameover || expectingInput)
 		return;
 	nextStep();
 });

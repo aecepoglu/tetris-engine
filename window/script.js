@@ -10,7 +10,7 @@ var settings = require('./settings');
 var playerDatas = require('./playerDatas');
 
 var debugs = [];
-var MAX_DEBUGS = 100;
+var MAX_DEBUGS = 10000;
 
 function drawPlayer(name) {
 	ReactDOM.render(
@@ -53,6 +53,11 @@ ipc.on('cmd/update', function(values) {
 });
 
 ipc.on('cmd/debug', function(text) {
+	if (text === ' clear') {
+		debugs = [];
+		return;
+	}
+
 	debugs.push(text);
 
 	if(debugs.length > MAX_DEBUGS) {
