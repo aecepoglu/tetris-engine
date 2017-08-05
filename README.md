@@ -10,7 +10,7 @@ How to Run
 ------------
 
 Simply use named-pipes for connecting your bot to the engine.  
-If you don't want to run Grunt, you can download [here](https://bitbucket.org/aecepoglu/tetris-engine/downloads)
+If you don't want to run Grunt, you can download pre-grunt'ed package [here](https://bitbucket.org/aecepoglu/tetris-engine/downloads)
 
     # open a terminal
     cd /path/to/tetris-engine
